@@ -6,13 +6,13 @@ const User=require('../models/user');
 const catchAsync=require('../utils/catchAsync');
 const usersControls=require('../controllers/users');
 
-router.get('/register',usersControls.renderRegister);
+router.route('/register')
+    .get(usersControls.renderRegister)
+    .post(catchAsync(usersControls.register))
 
-router.post('/register',catchAsync(usersControls.register))
-
-router.get('/login',usersControls.renderLogin)
-
-router.post('/login',passport.authenticate('local',{failureFlash:true,failureRedirect:'/login',keepSessionInfo:true}),catchAsync(usersControls.login))
+router.route('/login')
+    .get(usersControls.renderLogin)
+    .post(passport.authenticate('local',{failureFlash:true,failureRedirect:'/login',keepSessionInfo:true}),catchAsync(usersControls.login))
 
 router.get('/logout',usersControls.logout);
 
