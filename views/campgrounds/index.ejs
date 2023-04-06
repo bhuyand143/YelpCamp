@@ -1,11 +1,16 @@
 <%layout('layouts/boilerplate')%>
-    <h1>All Campgrounds!</h1>
+<div id="map" style="width: 100%; height: 500px;"></div>    
+<h1>All Campgrounds!</h1>
     <ul>
         <% for(let campground of campgrounds) {%>
              <div class="card mb-3">
                 <div class="row">
                     <div class="col-md-4">
-                        <img src="<%=campground.images[0].url%> " alt="" class="img-fluid">
+                      <% if(campground.images.length){%>
+                        <img src="<%=campground.images[0].url%> " alt="..." class="img-fluid">  
+                      <% } else{%>
+                         <img src="https://t4.ftcdn.net/jpg/00/78/27/27/360_F_78272730_UgIRbmpajA2bzrk2gw1YN8tqlJH6hPX1.jpg" alt="..." class="img-fluid">
+                      <% } %>
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">

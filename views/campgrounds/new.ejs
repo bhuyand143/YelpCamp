@@ -17,20 +17,12 @@
                         Looks good!
                     </div>
                 </div>
-                <input type="file" name="image" id="" multiple>
-                <!-- <div class="mb-3">
-                    <label for="image" class="form-label">Image Url</label>
-                    <input type="text" class="form-control" name="campground[image]" id="image" required>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
-                </div> -->
                 <div class="mb-3">
                     <label for="price" class="form-label">Campground Price</label>
                     <div class="input-group">
                         <span class="input-group-text">$</span>
                         <input type="text" class="form-control" id="price" aria-label="price" placeholder="0.00"
-                            name="campground[price]" required>
+                        name="campground[price]" required>
                         <div class="valid-feedback">
                             Looks good!
                         </div>
@@ -39,6 +31,14 @@
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
                     <textarea class="form-control" id="description" name="campground[description]" required></textarea>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                </div>
+                <div class="mt-3 custom-file">
+                    <label for="image" class="form-label">Add Images</label>
+                    <input type="file" class="form-control" id="image" name="image" multiple >
+                    <label for="image" class="custom-file-label text-muted"></label>
                     <div class="valid-feedback">
                         Looks good!
                     </div>
