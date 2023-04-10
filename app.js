@@ -9,10 +9,14 @@ const ejsMate=require('ejs-mate');
 const methodOverride=require('method-override');
 const session=require('express-session');
 const flash=require('connect-flash');
-const ExpressError=require("./utils/ExpressError");
 const passport=require('passport');
 const LocalStatergy=require('passport-local');
+const mongoSanitize= require('express-mongo-sanitize');
+const MongoDBStore=require("connect-mongo")(session);
+
 const User=require('./models/user');
+const ExpressError=require("./utils/ExpressError");
+
 
 const campgroundRoutes=require('./routes/campground');
 const reviewRoutes=require('./routes/review');
@@ -20,7 +24,10 @@ const userRoutes=require('./routes/users');
 
 
 mongoose.set('strictQuery', false);
-mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp')
+
+const localUrl='mongodb://127.0.0.1:27017/yelp-camp'
+// const dbUrl=process.env.DB_URL
+mongoose.connect(localUrl)
 .then(()=>{
     console.log('Mongo Connection Open!')
 })
@@ -36,13 +43,29 @@ app.set('views',path.join(__dirname,'views'))
 app.use(express.urlencoded({extended:true}))
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname,'public')));
+app.use(mongoSanitize({
+    replaceWith:'_'
+}));
+
+const store= new MongoDBStore({
+    url: localUrl,
+    secret:'Shouldbesecureindeploying',
+    touchAfter:24*60*60
+})
+
+store.on("error",(e)=>{
+    console.log("Session store error",e);
+})
 
 const sessionConfig={
-    secret:'Shouldbesecureindeploying',
+    store,
+    name:'session',
+    secret:'Shouldbesecureindeploying', //shuold be changed
     resave: false,
     saveUninitialized:true,
     cookie:{
         httpOnly:true,
+        // secure:true,
         expires:Date.now()+1000*60*60*24*7,
         maxAge:1000*60*60*24*7
     }
