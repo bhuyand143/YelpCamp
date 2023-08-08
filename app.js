@@ -25,9 +25,8 @@ const userRoutes=require('./routes/users');
 
 mongoose.set('strictQuery', false);
 
-const localUrl='mongodb://127.0.0.1:27017/yelp-camp'
-// const dbUrl=process.env.DB_URL
-mongoose.connect(localUrl)
+const dbUrl=process.env.DB_URL
+mongoose.connect(dbUrl)
 .then(()=>{
     console.log('Mongo Connection Open!')
 })
@@ -48,8 +47,8 @@ app.use(mongoSanitize({
 }));
 
 const store= new MongoDBStore({
-    url: localUrl,
-    secret:'Shouldbesecureindeploying',
+    url: dbUrl,
+    secret:process.env.STORE_SECRET,
     touchAfter:24*60*60
 })
 
@@ -60,7 +59,7 @@ store.on("error",(e)=>{
 const sessionConfig={
     store,
     name:'session',
-    secret:'Shouldbesecureindeploying', //shuold be changed
+    secret:process.env.STORE_SECRET, //shuold be changed
     resave: false,
     saveUninitialized:true,
     cookie:{
